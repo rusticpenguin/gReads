@@ -1,19 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 
-class Developer {
-  constructor(firstname, lastname){
-    this.firstname = firstname;
-    this.lastname = lastname;
-  }
-  getName() {
-    return this.firstname + ' ' + this.lastname;
-  }
-}
-
-const george = new Developer('big', 'money');
-console.log(george.getName());
-
 const list = [
   {
     title: 'React',
@@ -32,6 +19,8 @@ const list = [
     objectID: 1,
   },
 ];
+
+
 
 const isSearched = searchTerm => item =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -67,58 +56,55 @@ class App extends Component {
   render() {
     const { searchTerm, list } = this.state;
     return (
-      <div className="App">
-        <Search
-          value={searchTerm}
-          onChange={this.onSearchChange}
-        >
-          Search
-        </Search>
-        <Table 
-          list = {list}
-          pattern = {searchTerm}
-          onDismiss = {this.onDismiss}
+      <div className="page">
+        <div className="interactions">
+          <Search
+            value={searchTerm}
+            onChange={this.onSearchChange}
+          >
+            Search
+          </Search>
+          <Table 
+            list = {list}
+            pattern = {searchTerm}
+            onDismiss = {this.onDismiss}
           />
+        </div>
       </div>
     );
   }
 }
 
-class Search extends Component {
-  render() {
-    const { value, onChange, children } = this.props;
-    return(
-      <form>
-        {children} <input 
-          type="text"
-          value={value}
-          onChange={onChange}
-        />
-      </form>
-    );
-  }
-}
+const Search = ({ value, onChange, children }) => 
+    <form>
+      {children} <input 
+        type="text"
+        value={value}
+        onChange={onChange}
+      />
+    </form>
+
 
 class Table extends Component {
   render() {
     const { list, pattern, onDismiss } = this.props;
     return (
-      <div>
+      <div className="table">
         {list.filter(isSearched(pattern)).map(item =>
-          <div key={item.objectID}>
-            <span>
+          <div key={item.objectID} className="table-row">
+            <span className="largecolumn">
               <a href={item.url}>{item.title}</a>
             </span>
-            <span> {item.author} </span>
-            <span> {item.num_comments} </span>
-            <span> {item.points} </span>
-            <span>
-              <button 
+            <span className="mediumcolumn"> {item.author} </span>
+            <span className="smallcolumn"> {item.num_comments} </span>
+            <span className="smallcolumn"> {item.points} </span>
+            <span className="smallcolumn">
+              <Button 
                 onClick={() => onDismiss(item.objectID)}
-                type="button"
+                classname="button-inline"
               >
                 Dismiss
-              </button>
+              </Button>
             </span>
           </div>
         )}
