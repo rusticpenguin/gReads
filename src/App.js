@@ -32,7 +32,7 @@ class App extends Component {
   }
 
   needToSearchTopStories(searchTerm) {
-    return !this.stateresults[searchTerm];
+    return !this.state.results[searchTerm];
   }
 
   setSearchTopStories(result) {
