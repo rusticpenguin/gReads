@@ -26,7 +26,6 @@ class App extends Component {
     this.needToSearchTopStories = this.needToSearchTopStories.bind(this);
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
     this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
-    this.logThis = this.logThis.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onSearchSubmit = this.onSearchSubmit.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
@@ -68,10 +67,6 @@ class App extends Component {
     const { searchTerm } = this.state;
     this.setState({ searchKey: searchTerm });
     this.fetchSearchTopStories(searchTerm);
-  }
-
-  logThis(data) {
-    console.log(data);
   }
 
   onSearchChange(event) {
