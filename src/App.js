@@ -22,8 +22,10 @@ class App extends Component {
     };
 
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
+    this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
     this.logThis = this.logThis.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
+    this.onSearchSubmit = this.onSearchSubmit.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
   }
 
@@ -31,13 +33,16 @@ class App extends Component {
     this.setState({ result });
   }
 
+  fetchSearchTopStories(searchTerm) {
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+      .then(res => res.json())
+      .then(res => this.setSearchTopStories(result))
+      .catch(err => err);
+  }
+
   componentDidMount() {
     const { searchTerm } = this.state;
-
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
-    .then(res => res.json())
-    .then(res => this.setSearchTopStories(res))
-    .catch(err => err);
+    this.fetchSearchTopStories(searchTerm);
   }
 
   logThis(data) {
@@ -46,6 +51,10 @@ class App extends Component {
 
   onSearchChange(event) {
     this.setState({ searchTerm: event.target.value });
+  }
+
+  onSearchSubmit() {
+    const { searchTerm } = this.state;
   }
 
   onDismiss(id) {
