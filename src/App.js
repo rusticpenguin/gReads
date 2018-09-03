@@ -4,145 +4,82 @@ import './App.css';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 
-const DEFAULT_QUERY = 'redux';
-const DEFAULT_HPP = '100';
+const DEFAULT_QUERY = '';
 
-const PATH_BASE = 'https://hn.algolia.com/api/v1';
-const PATH_SEARCH = '/search';
-const PARAM_SEARCH = 'query=';
-const PARAM_PAGE = 'page=';
-const PARAM_HPP = 'hitsPerPage=';
+const PATH_BASE  = 'https://gread-backend.herokuapp.com/';
+const PATH_SEARCH = 'books'
+const PARAM_SELECTION = "";
 
-const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}&${PARAM_PAGE}&${PARAM_HPP}${DEFAULT_HPP}`;
+const url = `${PATH_BASE}${PATH_SEARCH}/${PARAM_SELECTION}`;
+
+const isSearched = searchTerm => item =>
+  item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      results: null,
-      searchKey: '',
-      searchTerm: DEFAULT_QUERY,
-      error: null,
+      result: null,
+      searchTerm: '',
+      totalBooks: 0,
     };
 
-    this.needToSearchTopStories = this.needToSearchTopStories.bind(this);
-    this.setSearchTopStories = this.setSearchTopStories.bind(this);
-    this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
+    this.setSearchDatabase = this.setSearchDatabase.bind(this)
     this.onSearchChange = this.onSearchChange.bind(this);
-    this.onSearchSubmit = this.onSearchSubmit.bind(this);
-    this.onDismiss = this.onDismiss.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
-  needToSearchTopStories(searchTerm) {
-    return !this.state.results[searchTerm];
-  }
-
-  setSearchTopStories(result) {
-    const { hits, page } = result;
-    const { searchKey, results } = this.state;
-
-    const oldHits = results && results[searchKey]
-      ? results[searchKey].hits
-      : [];
-
-    const updatedHits = [
-      ...oldHits,
-      ...hits
-    ];
-
-    this.setState({
-      results: {
-        ...results,
-        [searchKey]: { hits: updatedHits, page }
-      }
-    });
-  }
-
-  fetchSearchTopStories(searchTerm, page = 0) {
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
-      .then(res => res.json())
-      .then(res => this.setSearchTopStories(res))
-      .catch(error => this.setState({ error }));
+  setSearchDatabase(result) {
+    this.setState({ result });
   }
 
   componentDidMount() {
     const { searchTerm } = this.state;
-    this.setState({ searchKey: searchTerm });
-    this.fetchSearchTopStories(searchTerm);
+
+    fetch(`${PATH_BASE}${PATH_SEARCH}/${PARAM_SELECTION}`)
+      .then(res => res.json())
+      .then(res => this.setSearchDatabase(res))
+      .catch(err => err)
   }
 
   onSearchChange(event) {
     this.setState({ searchTerm: event.target.value });
   }
 
-  onSearchSubmit(event) {
-    const { searchTerm } = this.state;
-    this.setState({ searchKey: searchTerm })
-
-    if (this.needToSearchTopStories(searchTerm)){
-      this.fetchSearchTopStories(searchTerm);
-    }
-    event.preventDefault();
-  }
-
-  onDismiss(id) {
-    const { searchKey, results } = this.state;
-    const { hits, page } = results[searchKey];
-
-    const isNotId = item => item.objectID !== id;
-    const updatedHits = hits.filter(isNotId);
-
-    this.setState({
-      result: {
-        ...results,
-        [searchKey]: { hits: updatedHits, page}
-      }
+  onDelete(id) {
+    const isNotId = item => item._id !== id;
+    const updatedHits = this.state.result.foundBooks.filter(isNotId);
+    fetch(`${PATH_BASE}${PATH_SEARCH}/${id}`, {
+      method: 'DELETE'
+    })
+      .then(res => res.json())
+      .then(console.log)
+    this.setState({ 
+      result: Object.assign({}, this.state.result, { foundBooks : updatedHits })
     });
   }
 
   render() {
-    const { searchTerm, results, searchKey, error } = this.state;
-    const page = (
-      results &&
-      results[searchKey] &&
-      results[searchKey].page
-    ) || 0;
-    const list = (
-      results &&
-      results[searchKey] &&
-      results[searchKey].hits
-    ) || [];
-    
+    const { searchTerm, result, totalBooks } = this.state;
 
-
+    if (!result) { return null;}
     return (
-
       <div className="page">
         <Header />
         <div className="interactions">
           <Search
             value={searchTerm}
             onChange={this.onSearchChange}
-            onSubmit={this.onSearchSubmit}
           >
             Search
           </Search>
-          </div>
-        { error
-          ? <div className="interactions">
-            <p>Something Went Wrong</p>
-          </div>
-          : <Table
-            list = {list}
-            onDismiss = {this.onDismiss}
-          />
-        }
-          <div className="interactions">
-            <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
-            More
-            </Button>
-          </div>
+        </div>
+        <Table
+          list={ result.foundBooks }
+          pattern={searchTerm}
+          onDismiss={this.onDelete}
+        />
         <Footer />
       </div>
     );
@@ -153,31 +90,39 @@ const Search = ({ value, onChange, onSubmit, children }) =>
     <form onSubmit={onSubmit}>
       {children} <input
         type="text"
-        value={value}
         onChange={onChange}
       />
-      <button type="submit">
-        {children}
-      </button>
     </form>
 
 
-const Table = ({ list, onDismiss }) =>
+const Table = ({ list, pattern, onDelete }) =>
+
   <div className="table">
-    {list.map(item =>
-      <div key={item.objectID} className="table-row">
-        <span className="largecolumn">
-          <a href={item.url}>{item.title}</a>
+    {list.filter(isSearched(pattern)).map(item =>
+      <div key={item._id} className="table-row">
+        <img className="cover" src={item.bookCoverURL} alt={item.title + " Cover"} />
+        <div className="largecolumn">
+          <a href={item.url} className="bookTitle">{item.title}</a>
+          <div>
+            <span>Authors:</span>
+            <ul>
+              {item.authors.map(persons =>
+                <li key={item.authors.value}>{persons}</li>)}
+            </ul>
+          </div>
+        </div>
+        <div className="midcolumn">
+          <p className="description line-clamp"> {item.bookDescription} </p>
+        </div>
+        <span className="smallcolumn">Genre: {item.bookGenre}</span>
+        <span className="smallcolumn">
+          {item.points}
         </span>
-        <span className="mediumcolumn"> {item.author} </span>
-        <span className="smallcolumn"> {item.num_comments} </span>
-        <span className="smallcolumn"> {item.points} </span>
         <span className="smallcolumn">
           <Button
-            onClick={() => onDismiss(item.objectID)}
-            classname="button-inline"
+            onClick={() => onDelete(item._id)} className="delete"
           >
-            Dismiss
+            Delete
           </Button>
         </span>
       </div>
