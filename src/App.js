@@ -21,12 +21,13 @@ class App extends Component {
 
     this.state = {
       result: null,
-      searchTerm: DEFAULT_QUERY,
+      searchTerm: '',
+      totalBooks: 0,
     };
 
     this.setSearchDatabase = this.setSearchDatabase.bind(this)
     this.onSearchChange = this.onSearchChange.bind(this);
-    this.onDismiss = this.onDismiss.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   setSearchDatabase(result) {
@@ -46,7 +47,7 @@ class App extends Component {
     this.setState({ searchTerm: event.target.value });
   }
 
-  onDismiss(id) {
+  onDelete(id) {
     const isNotId = item => item._id !== id;
     const updatedHits = this.state.result.foundBooks.filter(isNotId);
     fetch(`${PATH_BASE}${PATH_SEARCH}/${id}`, {
@@ -60,7 +61,7 @@ class App extends Component {
   }
 
   render() {
-    const { searchTerm, result } = this.state;
+    const { searchTerm, result, totalBooks } = this.state;
 
     if (!result) { return null;}
     return (
@@ -77,7 +78,7 @@ class App extends Component {
         <Table
           list={ result.foundBooks }
           pattern={searchTerm}
-          onDismiss={this.onDismiss}
+          onDismiss={this.onDelete}
         />
         <Footer />
       </div>
@@ -89,19 +90,15 @@ const Search = ({ value, onChange, onSubmit, children }) =>
     <form onSubmit={onSubmit}>
       {children} <input
         type="text"
-        value={value}
         onChange={onChange}
       />
-      <button type="submit">
-        {children}
-      </button>
     </form>
 
 
-const Table = ({ list, onDismiss }) =>
+const Table = ({ list, pattern, onDelete }) =>
 
   <div className="table">
-    {list.map(item =>
+    {list.filter(isSearched(pattern)).map(item =>
       <div key={item._id} className="table-row">
         <img className="cover" src={item.bookCoverURL} alt={item.title + " Cover"} />
         <div className="largecolumn">
@@ -123,9 +120,9 @@ const Table = ({ list, onDismiss }) =>
         </span>
         <span className="smallcolumn">
           <Button
-            onClick={() => onDismiss(item._id)}
+            onClick={() => onDelete(item._id)} className="delete"
           >
-            Dismiss
+            Delete
           </Button>
         </span>
       </div>
