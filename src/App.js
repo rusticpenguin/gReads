@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+
 const DEFAULT_QUERY = 'redux';
 const DEFAULT_HPP = '100';
 
@@ -114,7 +117,9 @@ class App extends Component {
 
 
     return (
+
       <div className="page">
+        <Header />
         <div className="interactions">
           <Search
             value={searchTerm}
@@ -138,6 +143,7 @@ class App extends Component {
             More
             </Button>
           </div>
+        <Footer />
       </div>
     );
   }

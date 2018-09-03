@@ -1,8 +1,12 @@
+body {
+  background-color: #ffeb3b;
+}
+
 .page {
-  margin: 20px;
 }
 
 .interactions {
+  margin: 1vw;
   text-align: center;
 }
 
@@ -13,7 +17,7 @@
 .table-header {
   display: flex;
   line-height: 24px;
-  font-size:16px;
+  font-size: 5vw;
   padding: 0 10px;
   justify-content: space-between
 }
@@ -21,14 +25,15 @@
 .table-empty {
   margin: 200px;
   text-align: center;
-  font-size: 16px;
+  font-size: 5vw;
 }
 
 .table-row {
   display: flex;
-  line-height: 24px;
+  justify-content: space-between;
+  line-height: 5vw;
   white-space: nowrap;
-  margin: 10px 0;
+  margin: 1vw 15vw;
   padding: 10px;
   background: #ffffff;
   border: 1px solid #e3e3e3;
@@ -48,7 +53,7 @@
 
 .button-inline {
   border-width: 0;
-  background: transparent;
+  background: white;
   color: inherit;
   text-align: inherit;
   -webkit-font-smoothing: inherit;
