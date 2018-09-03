@@ -5,7 +5,7 @@ header {
     color: #fff;
 }
 
-img {
+header img {
     width: 2.3vw;
     -webkit-filter: invert(100%);
     filter: invert(100%);
