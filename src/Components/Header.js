@@ -14,9 +14,9 @@ class Header extends Component {
         const { pageTitle } = this.state;
         return (
             <header>
-                <div class="title">
-                    <img class="clickMe" src={require('../img/book.svg')} alt="logo"/>
-                    <h1 class="clickMe"> {pageTitle} </h1>
+                <div className="title">
+                    <img className="clickMe" src={require('../img/book.svg')} alt="logo"/>
+                    <h1 className="clickMe"> {pageTitle} </h1>
                 </div>
             </header>
         )
