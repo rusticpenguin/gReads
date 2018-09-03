@@ -4,7 +4,7 @@ ___
 Where you can search books.
 ___
 ## Live Demos
-Front end deployed **[here](#)**
+Front end deployed **[here](http://gread-frontend.herokuapp.com/)**
 
 Back end deployed **[here](http://gread-backend.herokuapp.com/)**
 
