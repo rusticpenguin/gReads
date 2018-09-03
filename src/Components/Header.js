@@ -7,13 +7,11 @@ class Header extends Component {
 
         this.state = {
             pageTitle: 'gReads',
-            pageLogo: '../img/book.png',
-            error: null,
         }
     };
 
     render() {
-        const { pageTitle, pageLogo, error } = this.state;
+        const { pageTitle } = this.state;
         return (
             <header>
                 <div class="title">
