@@ -94,6 +94,7 @@ body {
 .cover {
   width: 10vw;
   height: 50%;
+  padding-right: 2%;
 }
 
 .bookTitle {
@@ -105,4 +106,9 @@ body {
   white-space: normal;
   margin: 0 20%;
   text-overflow: ellipsis;
+}
+
+.delete {
+  background: #ff4545;
+  color: white;
 }
