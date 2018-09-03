@@ -47,9 +47,16 @@ class App extends Component {
   }
 
   onDismiss(id) {
-    const isNotId = item => item.objectID !== id;
-    const updatedList = this.state.list.filter(isNotId);
-    this.setState({ list: updatedList });
+    const isNotId = item => item._id !== id;
+    const updatedHits = this.state.result.foundBooks.filter(isNotId);
+    fetch(`${PATH_BASE}${PATH_SEARCH}/${id}`, {
+      method: 'DELETE'
+    })
+      .then(res => res.json())
+      .then(console.log)
+    this.setState({ 
+      result: Object.assign({}, this.state.result, { foundBooks : updatedHits })
+    });
   }
 
   render() {
@@ -92,17 +99,18 @@ const Search = ({ value, onChange, onSubmit, children }) =>
 
 
 const Table = ({ list, onDismiss }) =>
+
   <div className="table">
     {list.map(item =>
       <div key={item._id} className="table-row">
         <img className="cover" src={item.bookCoverURL} alt={item.title + " Cover"} />
         <div className="largecolumn">
           <a href={item.url} className="bookTitle">{item.title}</a>
-          <div classname="authors">
+          <div>
             <span>Authors:</span>
             <ul>
               {item.authors.map(persons =>
-              <li>{persons}</li>)}
+                <li key={item.authors.value}>{persons}</li>)}
             </ul>
           </div>
         </div>
@@ -115,8 +123,7 @@ const Table = ({ list, onDismiss }) =>
         </span>
         <span className="smallcolumn">
           <Button
-            onClick={() => onDismiss(item.objectID)}
-            classname="button-inline"
+            onClick={() => onDismiss(item._id)}
           >
             Dismiss
           </Button>
