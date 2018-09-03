@@ -6,15 +6,16 @@ class Footer extends Component {
         super(props);
 
         this.state = {
+            footerText: 'A full-stack react-app with mongoDB backend created by George Chios under the MIT License © 2018.',
             disclaimer: `This website uses art created by Benny Forsberg, from The Noun Project, under the `,
-            error: null,
         }
     };
 
     render() {
-        const { footerText, disclaimer, error } = this.state;
+        const { footerText, disclaimer } = this.state;
         return (
             <footer>
+                <span> {footerText} </span>
                 <span> {disclaimer} <a href="https://creativecommons.org/licenses/by/3.0/deed.en"> Creative Commons Attribution 3.0 Unported License </a> </span>
             </footer>
         )

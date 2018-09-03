@@ -7,18 +7,16 @@ class Header extends Component {
 
         this.state = {
             pageTitle: 'gReads',
-            pageLogo: '../img/book.png',
-            error: null,
         }
     };
 
     render() {
-        const { pageTitle, pageLogo, error } = this.state;
+        const { pageTitle } = this.state;
         return (
             <header>
                 <div class="title">
-                    <img src={require('../img/book.svg')} />
-                    <h1> {pageTitle} </h1>
+                    <img class="clickMe" src={require('../img/book.svg')} alt="logo"/>
+                    <h1 class="clickMe"> {pageTitle} </h1>
                 </div>
             </header>
         )
