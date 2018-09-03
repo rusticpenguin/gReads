@@ -1,13 +1,12 @@
 header {
-    font-family: 'Roboto', cursive;
-    font-size: 2vw;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 0.8vw;
     background: #222;
     color: #fff;
 }
 
-img {
-    height: 5vw;
-    width: 5vw;
+header img {
+    width: 2.3vw;
     -webkit-filter: invert(100%);
     filter: invert(100%);
     padding: 0 1vw;
@@ -18,4 +17,10 @@ img {
     flex-flow: row nowrap;
     align-items: center;
     padding: 0 2vw;
+
+}
+
+.clickMe {
+    cursor: pointer;
+    user-select: none; 
 }

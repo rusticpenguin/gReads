@@ -1,9 +1,14 @@
 footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     height: 3vw;
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
+    font-size: 0.9vw;
     font-family: 'Roboto', medium;
     background: #222;
     color: #fff;
