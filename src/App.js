@@ -78,7 +78,7 @@ class App extends Component {
         <Table
           list={ result.foundBooks }
           pattern={searchTerm}
-          onDismiss={this.onDelete}
+          onDelete={this.onDelete}
         />
         <Footer />
       </div>
