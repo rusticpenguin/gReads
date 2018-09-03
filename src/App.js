@@ -95,18 +95,21 @@ const Table = ({ list, onDismiss }) =>
   <div className="table">
     {list.map(item =>
       <div key={item._id} className="table-row">
-        <img src={item.bookCoverURL} alt={item.title + " Cover"} />
-        <span className="largecolumn">
-          <a href={item.url}>{item.title}</a>
-        </span>
-        <div className="authors">
-          <span>Authors </span>
-          {item.authors.map(persons =>
-          <span className="author">, {persons} </span>)}
+        <img className="cover" src={item.bookCoverURL} alt={item.title + " Cover"} />
+        <div className="largecolumn">
+          <a href={item.url} className="bookTitle">{item.title}</a>
+          <div classname="authors">
+            <span>Authors:</span>
+            <ul>
+              {item.authors.map(persons =>
+              <li>{persons}</li>)}
+            </ul>
+          </div>
         </div>
-        <span className="smallcolumn">
-          {item.num_comments}
-        </span>
+        <div className="midcolumn">
+          <p className="description line-clamp"> {item.bookDescription} </p>
+        </div>
+        <span className="smallcolumn">Genre: {item.bookGenre}</span>
         <span className="smallcolumn">
           {item.points}
         </span>
