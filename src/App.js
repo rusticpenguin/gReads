@@ -38,7 +38,6 @@ class App extends Component {
     this.setSearchDatabase = this.setSearchDatabase.bind(this)
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDelete = this.onDelete.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
   openModal1() {
@@ -90,17 +89,9 @@ class App extends Component {
       method: 'DELETE'
     })
       .then(res => res.json())
-      .then(console.log)
     this.setState({ 
       result: Object.assign({}, this.state.result, { foundBooks : updatedHits })
     });
-  }
-
-  onSubmit(formData){
-    console.log(formData)
-
-    this.preventDefault();
-    
   }
 
   render() {

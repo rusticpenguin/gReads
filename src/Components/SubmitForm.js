@@ -27,7 +27,6 @@ class SubmitForm extends Component {
             headers: new Headers({ "Content-Type": "application/json" })
         })
         .then(res => res.json())
-        .then(console.log);
     }
     render() {
         return (
