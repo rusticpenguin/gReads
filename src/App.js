@@ -5,6 +5,7 @@ import './App.css';
 
 import Header from './Components/Header';
 import Footer from './Components/Footer';
+import SubmitForm from './Components/SubmitForm'
 
 const DEFAULT_QUERY = '';
 
@@ -36,6 +37,7 @@ class App extends Component {
     this.setSearchDatabase = this.setSearchDatabase.bind(this)
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   openModal() {
@@ -81,6 +83,13 @@ class App extends Component {
     });
   }
 
+  onSubmit(formData){
+    console.log(formData)
+
+    this.preventDefault();
+    
+  }
+
   render() {
     const { searchTerm, result, totalBooks } = this.state;
 
@@ -99,7 +108,7 @@ class App extends Component {
             >
                 <h2 className="center" ref={subtitle => this.subtitle = subtitle}>Submit A Book</h2>
                 <button className="floatRight" onClick={this.closeModal}>close</button>
-              <Form />
+              <SubmitForm />
             </Modal>
         </div>
           <Search
@@ -120,49 +129,8 @@ class App extends Component {
   }
 }
 
-const Form = () =>
-  <div >
-    <form className="submitForm">
-      <span> Book Title: </span>
-      <input type="text" name="title" />
-      <span> Book Genre: </span>
-      <input type="text" name="bookGenre" />
-      <span> Book Description: </span>
-      <input type="text" name="bookDescription" />
-      <span> Book Cover URL: </span>
-      <input type="text" name="bookCoverURL" />
-      <span> Author 1's First Name: </span>
-      <input type="text" name="Author1firstname" />
-      <span> Author 1's Last Name: </span>
-      <input type="text" name="Author1lastname" />
-      <span> Author 1's Biography: </span>
-      <input type="text" name="Author1biography" />
-      <span> Author 1's Portrait: </span>
-      <input type="text" name="Author1portrait" />
-      <span> Author 2's First Name: </span>
-      <input type="text" name="Author2firstname" />
-      <span> Author 2's Last Name: </span>
-      <input type="text" name="Author2lastname" />
-      <span> Author 2's Biography: </span>
-      <input type="text" name="Author2biography" />
-      <span> Author 2's Portrait: </span>
-      <input type="text" name="Author2portrait" />
-      <span> Author 3's First Name: </span>
-      <input type="text" name="Author3firstname" />
-      <span> Author 3's Last Name: </span>
-      <input type="text" name="Author3lastname" />
-      <span> Author 3's Biography: </span>
-      <input type="text" name="Author3biography" />
-      <span> Author 3's Portrait: </span>
-      <input type="text" name="Author3portrait" />
-
-      <button className="submit">Submit</button>
-    </form>
-  </div>
-
-
-const Search = ({ value, onChange, onSubmit, children }) =>
-    <form onSubmit={onSubmit}>
+const Search = ({ value, onChange, children }) =>
+    <form>
       {children} <input
         type="text"
         onChange={onChange}
@@ -179,7 +147,7 @@ const Table = ({ list, pattern, onDelete }) =>
         <div className="largecolumn">
           <a href={item.url} className="bookTitle">{item.title}</a>
           <div>
-            <span>Authors:</span>
+            <label>Authors:</label>
             <ul>
               {item.authors.map(persons =>
                 <li key={item.authors.value}>{persons}</li>)}
@@ -189,17 +157,17 @@ const Table = ({ list, pattern, onDelete }) =>
         <div className="midcolumn">
           <p className="description line-clamp"> {item.bookDescription} </p>
         </div>
-        <span className="smallcolumn">Genre: {item.bookGenre}</span>
-        <span className="smallcolumn">
+        <label className="smallcolumn">Genre: {item.bookGenre}</label>
+        <label className="smallcolumn">
           {item.points}
-        </span>
-        <span className="smallcolumn">
+        </label>
+        <label className="smallcolumn">
           <Button
             onClick={() => onDelete(item._id)} className="delete"
           >
             Delete
           </Button>
-        </span>
+        </label>
       </div>
     )}
   </div>
