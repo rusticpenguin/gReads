@@ -112,3 +112,30 @@ body {
   background: #ff4545;
   color: white;
 }
+
+.submitForm {
+  display: flex;
+  justify-content: center;
+  flex-flow: column nowrap;
+  padding: 0 30%
+}
+
+.submitBook {
+  background: #008d3b;
+  border-color: #005f28;
+  color: white;
+}
+
+.floatRight {
+  float: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.submit {
+  background: #00dd5c;
+  border-color: #008035;
+  color: white;
+}
