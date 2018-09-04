@@ -23,29 +23,46 @@ class App extends Component {
     this.state = {
       result: null,
       searchTerm: '',
-      modalIsOpen: false,
+      modalIsOpen1: false,
+      modalIsOpen2: false,
     };
 
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openModal1 = this.openModal1.bind(this);
+    this.afterOpenModal1 = this.afterOpenModal1.bind(this);
+    this.closeModal1 = this.closeModal1.bind(this);
+    this.openModal2 = this.openModal2.bind(this);
+    this.afterOpenModal2 = this.afterOpenModal2.bind(this);
+    this.closeModal2 = this.closeModal2.bind(this);
     this.setSearchDatabase = this.setSearchDatabase.bind(this)
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
+  openModal1() {
+    this.setState({modalIsOpen1: true});
   }
 
-  afterOpenModal() {
+  afterOpenModal1() {
     // references are now sync'd and can be accessed.
     this.subtitle.style.color = '#222';
   }
 
-  closeModal() {
-    this.setState({modalIsOpen: false});
+  closeModal1() {
+    this.setState({modalIsOpen1: false});
+  }
+
+  openModal2() {
+    this.setState({modalIsOpen2: true});
+  }
+
+  afterOpenModal2() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#222';
+  }
+
+  closeModal2() {
+    this.setState({modalIsOpen2: false});
   }
 
   setSearchDatabase(result) {
@@ -92,17 +109,27 @@ class App extends Component {
         <Header />
         <div className="interactions">
           <div>
-            <button className="submitBook" onClick={this.openModal}>Submit A Book</button>
+            <button className="submitBook" onClick={this.openModal1}>Submit A Book</button>
             <Modal
-              isOpen={this.state.modalIsOpen}
-              onAfterOpen={this.afterOpenModal}
-              onRequestClose={this.closeModal}
-              contentLabel="Example Modal"
+              isOpen={this.state.modalIsOpen1}
+              onAfterOpen={this.afterOpenModal1}
+              onRequestClose={this.closeModal1}
+              contentLabel="Submit Modal"
             >
                 <h2 className="center" ref={subtitle => this.subtitle = subtitle}>Submit A Book</h2>
-                <button className="floatRight" onClick={this.closeModal}>close</button>
+                <button className="floatRight" onClick={this.closeModal1}>close</button>
               <SubmitForm />
             </Modal>
+            <Modal
+              isOpen= {this.state.modalIsOpen2}
+              onAfterOpen={this.afterOpenModal2}
+              onRequestClose={this.closeModal2}
+              contentLabel="Edit Modal"
+            >
+                <h2 className="center" ref={subtitle => this.subtitle = subtitle}>Edit A Book</h2>
+                <button className="floatRight" onClick={this.closeModal2}>close</button>
+              <SubmitForm />
+          </Modal>
         </div>
           <Search
             value={searchTerm}
@@ -115,6 +142,7 @@ class App extends Component {
           list={ result.foundBooks }
           pattern={searchTerm}
           onDelete={this.onDelete}
+          openModal2={this.openModal2}
         />
         <Footer />
       </div>
@@ -131,7 +159,7 @@ const Search = ({ value, onChange, children }) =>
     </form>
 
 
-const Table = ({ list, pattern, onDelete }) =>
+const Table = ({ list, pattern, onDelete, openModal2 }) =>
 
   <div className="table">
     {list.filter(isSearched(pattern)).map(item =>
@@ -155,6 +183,8 @@ const Table = ({ list, pattern, onDelete }) =>
           {item.points}
         </label>
         <label className="smallcolumn">
+        <button className="submitBook" onClick={openModal2}>Edit</button>
+
           <Button
             onClick={() => onDelete(item._id)} className="delete"
           >
