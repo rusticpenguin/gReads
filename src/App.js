@@ -7,13 +7,9 @@ import Header from './Components/Header';
 import Footer from './Components/Footer';
 import SubmitForm from './Components/SubmitForm'
 
-const DEFAULT_QUERY = '';
-
 const PATH_BASE  = 'https://gread-backend.herokuapp.com/';
 const PATH_SEARCH = 'books'
 const PARAM_SELECTION = "";
-
-const url = `${PATH_BASE}${PATH_SEARCH}/${PARAM_SELECTION}`;
 
 const isSearched = searchTerm => item =>
   item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -27,7 +23,6 @@ class App extends Component {
     this.state = {
       result: null,
       searchTerm: '',
-      totalBooks: 0,
       modalIsOpen: false,
     };
 
@@ -58,8 +53,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { searchTerm } = this.state;
-
     fetch(`${PATH_BASE}${PATH_SEARCH}/${PARAM_SELECTION}`)
       .then(res => res.json())
       .then(res => this.setSearchDatabase(res))
@@ -91,7 +84,7 @@ class App extends Component {
   }
 
   render() {
-    const { searchTerm, result, totalBooks } = this.state;
+    const { searchTerm, result } = this.state;
 
     if (!result) { return null;}
     return (
