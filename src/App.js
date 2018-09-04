@@ -149,8 +149,8 @@ const Table = ({ list, pattern, onDelete }) =>
           <div>
             <label>Authors:</label>
             <ul>
-              {item.authors.map(persons =>
-                <li key={item.authors.value}>{persons}</li>)}
+              {item.authors.map((persons, index) =>
+                <li key={index.toString()}>{persons}</li>)}
             </ul>
           </div>
         </div>
