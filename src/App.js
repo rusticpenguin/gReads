@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import './App.css';
+
 
 import Header from './Components/Header';
 import Footer from './Components/Footer';
+import SubmitForm from './Components/SubmitForm'
 
 const DEFAULT_QUERY = '';
 
@@ -15,6 +18,8 @@ const url = `${PATH_BASE}${PATH_SEARCH}/${PARAM_SELECTION}`;
 const isSearched = searchTerm => item =>
   item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
+Modal.setAppElement('#root')
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -23,11 +28,29 @@ class App extends Component {
       result: null,
       searchTerm: '',
       totalBooks: 0,
+      modalIsOpen: false,
     };
 
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.setSearchDatabase = this.setSearchDatabase.bind(this)
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#222';
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
   }
 
   setSearchDatabase(result) {
@@ -60,6 +83,13 @@ class App extends Component {
     });
   }
 
+  onSubmit(formData){
+    console.log(formData)
+
+    this.preventDefault();
+    
+  }
+
   render() {
     const { searchTerm, result, totalBooks } = this.state;
 
@@ -68,6 +98,19 @@ class App extends Component {
       <div className="page">
         <Header />
         <div className="interactions">
+          <div>
+            <button className="submitBook" onClick={this.openModal}>Submit A Book</button>
+            <Modal
+              isOpen={this.state.modalIsOpen}
+              onAfterOpen={this.afterOpenModal}
+              onRequestClose={this.closeModal}
+              contentLabel="Example Modal"
+            >
+                <h2 className="center" ref={subtitle => this.subtitle = subtitle}>Submit A Book</h2>
+                <button className="floatRight" onClick={this.closeModal}>close</button>
+              <SubmitForm />
+            </Modal>
+        </div>
           <Search
             value={searchTerm}
             onChange={this.onSearchChange}
@@ -86,8 +129,8 @@ class App extends Component {
   }
 }
 
-const Search = ({ value, onChange, onSubmit, children }) =>
-    <form onSubmit={onSubmit}>
+const Search = ({ value, onChange, children }) =>
+    <form>
       {children} <input
         type="text"
         onChange={onChange}
@@ -104,7 +147,7 @@ const Table = ({ list, pattern, onDelete }) =>
         <div className="largecolumn">
           <a href={item.url} className="bookTitle">{item.title}</a>
           <div>
-            <span>Authors:</span>
+            <label>Authors:</label>
             <ul>
               {item.authors.map(persons =>
                 <li key={item.authors.value}>{persons}</li>)}
@@ -114,17 +157,17 @@ const Table = ({ list, pattern, onDelete }) =>
         <div className="midcolumn">
           <p className="description line-clamp"> {item.bookDescription} </p>
         </div>
-        <span className="smallcolumn">Genre: {item.bookGenre}</span>
-        <span className="smallcolumn">
+        <label className="smallcolumn">Genre: {item.bookGenre}</label>
+        <label className="smallcolumn">
           {item.points}
-        </span>
-        <span className="smallcolumn">
+        </label>
+        <label className="smallcolumn">
           <Button
             onClick={() => onDelete(item._id)} className="delete"
           >
             Delete
           </Button>
-        </span>
+        </label>
       </div>
     )}
   </div>
