@@ -6,6 +6,7 @@ import './App.css';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import SubmitForm from './Components/SubmitForm'
+import EditForm from './Components/EditForm'
 
 const PATH_BASE  = 'https://gread-backend.herokuapp.com/';
 const PATH_SEARCH = 'books'
@@ -25,6 +26,7 @@ class App extends Component {
       searchTerm: '',
       modalIsOpen1: false,
       modalIsOpen2: false,
+      editTarget: "",
     };
 
     this.openModal1 = this.openModal1.bind(this);
@@ -52,7 +54,8 @@ class App extends Component {
     this.setState({modalIsOpen1: false});
   }
 
-  openModal2() {
+  openModal2(id) {
+    this.setState({editTarget: id});
     this.setState({modalIsOpen2: true});
   }
 
@@ -128,7 +131,9 @@ class App extends Component {
             >
                 <h2 className="center" ref={subtitle => this.subtitle = subtitle}>Edit A Book</h2>
                 <button className="floatRight" onClick={this.closeModal2}>close</button>
-              <SubmitForm />
+              <EditForm
+                value = {this.state.editTarget}
+              />
           </Modal>
         </div>
           <Search
@@ -183,7 +188,7 @@ const Table = ({ list, pattern, onDelete, openModal2 }) =>
           {item.points}
         </label>
         <label className="smallcolumn">
-        <button className="submitBook" onClick={openModal2}>Edit</button>
+        <button className="submitBook" onClick={() => openModal2(item._id)}>Edit</button>
 
           <Button
             onClick={() => onDelete(item._id)} className="delete"
