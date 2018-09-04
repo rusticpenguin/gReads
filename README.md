@@ -10,7 +10,7 @@ Back end deployed **[here](http://gread-backend.herokuapp.com/)**
 
 ## Technologies used:
 
- - Front end: React
+ - Front end: React, react-modal
  - Back end: MongoDB, Express, Mongoose, Bodyparser, CORS
 
 ## About The Product
