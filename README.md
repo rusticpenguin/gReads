@@ -1,4 +1,4 @@
-[gReads Logo](#)
+![gReads Logo](https://user-images.githubusercontent.com/38636581/45008695-4f5f6180-afc1-11e8-9971-c82c3bfadb0c.png)
 ___
 # gReads
 Where you can search books.
