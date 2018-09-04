@@ -14,10 +14,10 @@ Back end deployed **[here](http://gread-backend.herokuapp.com/)**
  - Back end: MongoDB, Express, Mongoose, Bodyparser, CORS
 
 ## About The Product
- - Search through book / author entries
- - Create book / author entries
- - Edit book / author entries
- - Delete book / author entries
+ - Search through book
+ - Create book
+ - Edit book
+ - Delete book
 
 ## Back End Repo
 Check out our back end repo **[here](https://github.com/rusticpenguin/gReads-Backend)**
